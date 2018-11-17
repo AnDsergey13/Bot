@@ -11,7 +11,7 @@ bot = Binance(
 
 #запись данных в файл
 def rec():
-	my_file = open('{0}.txt', 'w'.format(rus_name))
+	my_file = open('exchangeInfo.txt', 'w'.format(rus_name))
 	my_file.write(str(name_file))
 	my_file.close()
 
@@ -48,8 +48,9 @@ methodss = {
 	'tickerBookTicker':"bot.tickerBookTicker()"
 }
 '''
+
+#print(bot.exchangeInfo())
 '''
-print(bot.exchangeInfo())
 print(bot.depth())
 print(bot.trades())
 print(bot.historicalTrades())

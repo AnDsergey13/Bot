@@ -1,5 +1,6 @@
 from ex5_2 import rug
-
+'''import pdb
+pdb.set_trace() '''
 i = 1
 
 while 1: # бесконечный цикл # действие повторяется пока условие истинно
@@ -15,10 +16,7 @@ while 1: # бесконечный цикл # действие повторяет
 			if num > 20:
 				print("Слишком быстро!")
 				break
-			'''if num > 40:
-			pass
-			print("Слишком быстро!")'''
 	else:
-		rug(i)
+		#print(rug(i))
+		i = rug(i)
 		i += 1 # счётчик
-		

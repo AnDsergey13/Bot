@@ -16,4 +16,4 @@ def rug(i):
 	else:
 		i = 1
 		print ("Обновление списка. Число = {0}".format(i))
-		return i
+	return i
