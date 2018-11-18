@@ -1,0 +1,23 @@
+{
+    "askPrice": "0.00141850",
+    "quoteVolume": "1001.21739678",
+    "symbol": "BNBBTC",
+    "count": 22318,
+    "firstId": 31164987,
+    "openPrice": "0.00138410",
+    "bidPrice": "0.00141830",
+    "volume": "719872.77000000",
+    "lowPrice": "0.00137360",
+    "priceChange": "0.00003440",
+    "priceChangePercent": "2.485",
+    "prevClosePrice": "0.00138410",
+    "lastPrice": "0.00141850",
+    "closeTime": 1542535400009,
+    "lastQty": "1.40000000",
+    "highPrice": "0.00142240",
+    "askQty": "4.07000000",
+    "bidQty": "11.55000000",
+    "weightedAvgPrice": "0.00139083",
+    "openTime": 1542449000009,
+    "lastId": 31187304
+}
