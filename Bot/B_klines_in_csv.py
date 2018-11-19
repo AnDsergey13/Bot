@@ -62,43 +62,51 @@ sinxron()
 print("Прошло 15 секунд, и запись объёмов")
 '''
 
-shift_in_klines = (
-	(6 , 1),
-	(0 , 5000),
-	(0 , 10000),
-	(0 , 15000),
-	(0 , 20000),
-	(0 , 25000),
-	(0 , 30000),
-	(0 , 35000),
-	(0 , 40000),
-	(0 , 45000),
-	(0 , 50000),
-	(0 , 55000)
-)
+shift_in_klines = [
+	[6 , 1],
+	[0 , 5000],
+	[0 , 10000],
+	[0 , 15000],
+	[0 , 20000],
+	[0 , 25000],
+	[0 , 30000],
+	[0 , 35000],
+	[0 , 40000],
+	[0 , 45000],
+	[0 , 50000],
+	[0 , 55000]
+]
+
+#def parse():
 
 def sinxron():	#синхронизация двух методов
 	while 1:					
 		time_check = bot.time()
 		time_check = int(time_check['serverTime'])
-		print("{0} {1}".format(time_next, time_check))
+		#print("{0} {1}".format(time_next, time_check))
 		if time_check > time_next:
-			print ("Выход из цикла")
+			#print ("Выход из цикла")
 			break
-		print ("Внутри цикла")
+		#print ("Внутри цикла")
 		continue
-
-for i in range(12): #каждую итерацию последовательно выдёргиваем значения из словоря 
-	#filt_klines(data) 
-	print(i)
 	data = bot.klines(symbol='BTCUSDT', interval='1m', limit=1)
 	data = data[0]
-	der = shift_in_klines[i]
-	
-	print(der)
-	'''
-	time_next = int(data[shift_in_klines.get(i)])+shift_in_klines.values(i)
+	rec.append(data[4])	#запись цены
+	rec.append(data[5])	#запись объёмов в BTC
+	rec.append(data[7])	#запись объёмов в USDT
+	rec.append(data[8])	#общее количество транзакций за временной промежуток
+	print(rec)
+	del rec
+
+
+
+
+for i in range(12): #каждую итерацию последовательно выдёргиваем значения из словоря 
+	rec = []
+	data = bot.klines(symbol='BTCUSDT', interval='1m', limit=1)
+	data = data[0]
+	#shift_in_klines[i][1] #номер позиции
+	time_next = int(data[shift_in_klines[i][0]])+shift_in_klines[i][1]	#условие перехода
 	sinxron()
 	
-	print("Уровень = {}".format(shift_in_klines.value(i)))
-	'''
+	#print("Уровень = {}".format(shift_in_klines[i][1]))
