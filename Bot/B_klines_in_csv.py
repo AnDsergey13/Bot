@@ -62,8 +62,8 @@ sinxron()
 print("Прошло 15 секунд, и запись объёмов")
 '''
 
-shift_in_klines = [
-	[6 , 1],
+
+shift_time_in_klines = [
 	[0 , 5000],
 	[0 , 10000],
 	[0 , 15000],
@@ -77,32 +77,90 @@ shift_in_klines = [
 	[0 , 55000]
 ]
 
-#def parse():
+sinx_klines_time = [6 , 1]
 
-def sinxron():	#синхронизация двух методов
+def request_time(time_check):
+	time_check = bot.time()
+	time_check = int(time_check['serverTime'])
+	#print("модуль request_time выполнен")
+	return time_check
+
+def request_klines(data):
+	data = bot.klines(symbol='BTCUSDT', interval='1m', limit=1)
+	data = data[0]
+	#print("модуль request_klines выполнен")
+	return data
+
+def market_forces(rec, force):
+	#price_moment = rec[1]
+	value_BTC = rec[2]
+	value_BTC2 = rec[3]
+	#force = (price_moment*value_BTC)/value_USDT
+	force = value_BTC/value_BTC2
+	return force
+
+def formation_list(time_check, data):
+	rec = []				#???
+	force = 1
+
+	time_check = request_time(time_check)
+	data = request_klines(data)
+	rec.append(time_check)			#запись времени			(0)
+	rec.append(round(float(data[4]), 2))	#запись цены	(1)
+	rec.append(float(data[5]))				#запись объёмов в BTC 	(2)
+	rec.append(float(data[9]))
+	rec.append(float(data[7]))				#запись объёмов в USDT	(3)
+	
+	rec.append(float(data[10]))
+	rec.append(data[8])				#общее количество транзакций за временной промежуток	(4)
+
+	force = market_forces(rec, force)
+	rec.append(round(force, 5))		#сила рынка 			(5)
+	second = shift_time_in_klines[i][1]
+	#rec.append(str(second/1000)+ " cекунд")
+	print("{0} секунд прошло с начала свечи".format(int(second/1000)))
+	print(rec)
+	
+	#test_data.write("{0} секунд прошло с начала свечи".format(str(second/1000)))
+	#test_data.write("\n")
+	test_data.write(str(rec))
+	test_data.write("\n")
+	
+	del rec
+
+def check(time_check, time_next, data, i):	#сверка заданного временного промежутка с временем биржи
 	while 1:					
-		time_check = bot.time()
-		time_check = int(time_check['serverTime'])
-		#print("{0} {1}".format(time_next, time_check))
+		time_check = request_time(time_check)
+		print("{0} {1}".format(time_next, time_check))
 		if time_check > time_next:
 			#print ("Выход из цикла")
 			break
 		#print ("Внутри цикла")
 		continue
-	data = bot.klines(symbol='BTCUSDT', interval='1m', limit=1)
-	data = data[0]
-	rec.append(data[4])	#запись цены
-	rec.append(data[5])	#запись объёмов в BTC
-	rec.append(data[7])	#запись объёмов в USDT
-	rec.append(data[8])	#общее количество транзакций за временной промежуток
-	print(rec)
-	del rec
+	formation_list(time_check, data)
 
+data = []
+time_check = {}
+i = 0
 
+data = request_klines(data)
+test_data = open("test_data.txt", "w")
+#shift_in_klines[i][1] #номер позиции
+time_next = int(data[sinx_klines_time[0]])+sinx_klines_time[1]
+check(time_check, time_next, data, i)
+for t in range(10): # 10 минут записи
+	for i in range(len(shift_time_in_klines)):
+		data = request_klines(data)
+		time_next = int(data[shift_time_in_klines[i][0]])+shift_time_in_klines[i][1]	#условие перехода
+		check(time_check, time_next, data, i)
 
+test_data.close()
+print("Запись завершина. файл закрыт")
 
+#!time_check = request_time(time_check)
+
+'''
 for i in range(12): #каждую итерацию последовательно выдёргиваем значения из словоря 
-	rec = []
 	data = bot.klines(symbol='BTCUSDT', interval='1m', limit=1)
 	data = data[0]
 	#shift_in_klines[i][1] #номер позиции
@@ -110,3 +168,4 @@ for i in range(12): #каждую итерацию последовательн�
 	sinxron()
 	
 	#print("Уровень = {}".format(shift_in_klines[i][1]))
+'''
