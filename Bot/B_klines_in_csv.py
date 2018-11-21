@@ -3,8 +3,8 @@ import our_library
 from binance_api import Binance
 
 bot = Binance(
-    API_KEY='qRmmGsVlut46jEAYV6oKu6QuvEOrKPkg5aflmYkgmvOglBBbVl0ixMn8u1pf82sc',
-    API_SECRET='GGw5Rr5fan9JC1dIhfyQMM5JFR5riPgCcM9wCUOk5NkUDbBaARAajKPlqUi1gx9R'
+    API_KEY='',
+    API_SECRET=''
 )
 
 #our_library.record_in_file('klines_in_csv', data)
