@@ -1,4 +1,6 @@
 from binance_api import Binance
+import pdb
+#pdb.set_trace()
 
 bot = Binance(
     API_KEY='',
@@ -27,16 +29,21 @@ second_request = [
 	]
 
 new_list = first_request
-#for i in first_request:
-#num = 0
+last_index_sec_req = len(second_request)	# номер последней строки +1
+#print (last_index_sec_req)
+test_string = first_request[-1]
 
-i = first_request[-1]
+#pdb.set_trace()		#Отладчик
 
-for j in second_request:
-	
-	if i == j:
-		new_list.append(j)
-		print(i)
+num_str_sec_req = 0
+for string_sec_req in second_request:
+	if test_string == string_sec_req:	#нахождение строки (2 list), на которой закончился прошлый запрос (1 list)
+		num_str_sec_req += 1			#выставляем номер строки для начала записи (след. строка после обнаруженной)
+		diapaz = second_request[num_str_sec_req:last_index_sec_req]
+		print (diapaz)
+		new_list.append(diapaz)
+		break
+	num_str_sec_req += 1
 
 print(new_list)
 
