@@ -1,17 +1,21 @@
 from binance_api import Binance
 import pdb
+import time
+import copy
 #pdb.set_trace()
 
 bot = Binance(
     API_KEY='',
     API_SECRET=''
 )
-
-#first_request = bot.trades(symbol='BTCUSDT', limit = 5)
-#print (first_request)
-
-new_list = []
-
+'''
+period_record = 10	#в минутах
+period_in_second = period_record * 60 *	1000 #перевод в секунды для binance
+start_record = int(round(time.time(),0))*1000 
+end_record = start_record + period_in_second
+#print(start_record, " ", end_record)
+'''
+'''
 first_request = [
 	{'a':1, 'b':2, 'c':3},
 	{'a':2, 'b':3, 'c':4},
@@ -27,32 +31,42 @@ second_request = [
 	{'a':6, 'b':7, 'c':8},
 	{'a':7, 'b':8, 'c':9},	
 	]
+'''
 
-new_list = first_request
+def record_in_file():	#запись фильтрованных значений
+	for string in range_for_record:
+		test_data.write(str(string))
+		test_data.write("\n")
+		#print(string) 
+
+test_data = open("statistic_data.txt", "w")
+first_request = bot.trades(symbol='BTCUSDT', limit = 20)
+range_for_record = copy.deepcopy(first_request)
+record_in_file()
+del range_for_record
+
+time.sleep(2)
+second_request = bot.trades(symbol='BTCUSDT', limit = 20)
+print("создан второй лист")
+
 last_index_sec_req = len(second_request)	# номер последней строки +1
-#print (last_index_sec_req)
 test_string = first_request[-1]
-
-#pdb.set_trace()		#Отладчик
-
 num_str_sec_req = 0
+
 for string_sec_req in second_request:
 	if test_string == string_sec_req:	#нахождение строки (2 list), на которой закончился прошлый запрос (1 list)
 		num_str_sec_req += 1			#выставляем номер строки для начала записи (след. строка после обнаруженной)
-		diapaz = second_request[num_str_sec_req:last_index_sec_req]
-		print (diapaz)
-		new_list.append(diapaz)
+		range_for_record = second_request[num_str_sec_req:last_index_sec_req]
+		record_in_file()
+		#new_list = first_request + second_request[num_str_sec_req:last_index_sec_req]	#сшивание недостающих данных с первым списком
 		break
 	num_str_sec_req += 1
-
-print(new_list)
-
+else:
+	print("увеличьте число сделок в методе")
+#print(new_list)
+test_data.close()
 '''
-for num1 in first_request:
-	for num2 in second_request:
-		if num1 == num2:
-			new_list.append(num2)
-			print("Запись")
-		else:
-			continue'''
-
+tt = bot.time()
+print("Binance",tt['serverTime'])	#время биржи отстаёт, в среднем, на 34 секунды
+print("PC     ",int(round(time.time(),0)))
+'''
